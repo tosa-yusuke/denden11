@@ -72,6 +72,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django_app.wsgi.application'
 
+# ログイン後トップページにリダイレクト
+LOGIN_URL = '/login/'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
