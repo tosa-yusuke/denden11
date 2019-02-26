@@ -1,16 +1,18 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 from django.contrib import messages
 from django.http import HttpResponse
 
 from .models import Person, Item, History, Cart
-from .forms import Product_form
+from .forms import Product_form, Login_form
 
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+@login_required
 def index(request):
     products = Item.objects.all()
     params = {
@@ -18,7 +20,22 @@ def index(request):
     }
     return render(request, 'ecom/index.html', params)
 
+def login(request):
+    params = {
+        'login':Login_form
+    }
 
+    if request.method == "POST":
+        authentication(request)
+    return render(request, 'ecom/login.html', params)
+
+def authentication(request):
+    form = Login_form(data=request.POST)
+    if form.is_valid():
+        return redirect('views.index')
+    form.add_error(None, '入力内容が違います。')
+
+@login_required
 def product(request):
     cart = get_cart()
     number = 0
@@ -38,7 +55,7 @@ def product(request):
 
     return render(request, 'ecom/product.html', params)
 
-
+@login_required
 def pay(request):
     items_in_cart = Item.objects.exclude(in_cart=0)
     total_price = 0

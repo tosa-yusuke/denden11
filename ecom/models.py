@@ -1,5 +1,6 @@
 from django.db import models
 
+
 #アカウント情報
 class Person(models.Model):
     name = models.CharField(max_length=50)
