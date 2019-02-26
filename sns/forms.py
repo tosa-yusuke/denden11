@@ -75,3 +75,4 @@ class PostForm(forms.Form):
                      filter(owner__in=[user,public])],
         )
 
+
